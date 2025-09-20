@@ -68,7 +68,12 @@ fun task2() {
 fun task3() {
     println("=== Перевод в двоичную систему ===")
     println("Введи число:")
-    val n = readln().toInt()
+    val n = readln().toIntOrNull()
+    if (n == null) {
+        println("Ошибка: введите корректное число")
+        return
+    }
+
     var num = n
     var binary = ""
 
@@ -82,26 +87,59 @@ fun task3() {
 
 fun task4() {
     println("=== Калькулятор ===")
-    println("Введи пример:")
-    val parts = readln().split(" ")
-    val a = parts[0].toDouble()
-    val b = parts[2].toDouble()
-    val op = parts[1]
+    println("Введи первое число:")
+    val num1Str = readln()
+    println("Введи второе число:")
+    val num2Str = readln()
+
+    val num1 = num1Str.toDoubleOrNull()
+    val num2 = num2Str.toDoubleOrNull()
+
+    if (num1 == null || num2 == null) {
+        println("Ошибка: введите корректные числа")
+        return
+    }
+
+    println("Выбери операцию (+, -, *, /):")
+    val op = readln()
 
     when (op) {
-        "+" -> println(a + b)
-        "-" -> println(a - b)
-        "*" -> println(a * b)
-        "/" -> println(a / b)
+        "+" -> println("Результат: ${num1 + num2}")
+        "-" -> println("Результат: ${num1 - num2}")
+        "*" -> println("Результат: ${num1 * num2}")
+        "/" -> {
+            if (num2 == 0.0) {
+                println("Ошибка: деление на ноль")
+            } else {
+                println("Результат: ${num1 / num2}")
+            }
+        }
+        else -> println("Ошибка: неизвестная операция")
     }
 }
 
 fun task5() {
     println("=== Поиск степени ===")
-    println("Введи число и основание (например: 8 2):")
-    val parts = readln().split(" ")
-    val n = parts[0].toInt()
-    val x = parts[1].toInt()
+    println("Введи число:")
+    val n = readln().toIntOrNull()
+    println("Введи основание степени:")
+    val x = readln().toIntOrNull()
+
+    if (n == null || x == null) {
+        println("Ошибка: введите корректные числа")
+        return
+    }
+
+    if (x <= 0) {
+        println("Ошибка: основание степени должно быть положительным")
+        return
+    }
+
+    if (n <= 0) {
+        println("Ошибка: число должно быть положительным")
+        return
+    }
+
     var y = 0
     var power = 1
 
@@ -110,15 +148,26 @@ fun task5() {
         y++
     }
 
-    if (power == n) println(y) else println("Нет целого показателя")
+    if (power == n) {
+        println("Показатель степени: $y")
+        println("Проверка: $x^$y = $n")
+    } else {
+        println("Нет целого показателя степени")
+        println("Ближайшие степени: $x^${y-1} = ${power/x}, $x^$y = $power")
+    }
 }
 
 fun task6() {
     println("=== Создание нечетного числа ===")
     println("Введи первую цифру(0-9):")
-    val d1 = readln().toInt()
+    val d1 = readln().toIntOrNull()
     println("Введи вторую цифру(0-9):")
-    val d2 = readln().toInt()
+    val d2 = readln().toIntOrNull()
+
+    if (d1 == null || d2 == null || d1 !in 0..9 || d2 !in 0..9) {
+        println("Ошибка: введите корректные цифры от 0 до 9")
+        return
+    }
 
     val num1 = d1 * 10 + d2
     val num2 = d2 * 10 + d1
